@@ -4,6 +4,7 @@
 int E();
 void STMT();
 void IF();
+void WHILE();
 void BLOCK();
 
 int tempIdx = 0, labelIdx = 0;
