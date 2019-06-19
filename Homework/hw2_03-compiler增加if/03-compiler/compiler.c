@@ -4,6 +4,7 @@
 int E();
 void STMT();
 void IF();
+void WHILE();
 void BLOCK();
 
 int tempIdx = 0, labelIdx = 0;
@@ -111,8 +112,8 @@ void WHILE() {
 void STMT() {
   if (isNext("while"))
     return WHILE();
-  // else if (isNext("if"))
-  //   IF();
+  else if (isNext("if"))
+    IF();
   else if (isNext("{"))
     BLOCK();
   else
