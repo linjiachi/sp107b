@@ -48,11 +48,11 @@ char *skip(char *set) {
 // F = (E) | Number | Id
 int F() {
   int f;
-  if (isNext("(")) { // '(' E ')'
-    next(); // (
+  if (isNext("(")) {  // '(' E ')'
+    next();           // (
     f = E();
-    next(); // )
-  } else { // Number | Id
+    next();           // )
+  } else {            // Number | Id
     f = nextTemp();
     char *item = next();
     //emit("t%d = %s\n", f, item);
@@ -157,6 +157,9 @@ void parse() {
   PROG();
 }
 
+/* 印出組合語言
+t = 字母 或 數字 
+  -> D=M 或 D=A */
 void F_HACKCPU(int f, char *item) {
   if(isAlpha(item[0])) {
     emit("@%s\t#t%d = %s\n", item, f, item);
@@ -170,6 +173,7 @@ void F_HACKCPU(int f, char *item) {
   emit("M = D\n");
 }
 
+/* 印出組合語言 */
 void E_HACKCPU(int i, int i1, char *op, int i2) {
   emit("@t%d\t#t%d = t%d %s t%d\n", i1, i, i1, op, i2);
   emit("D = M\n");
@@ -178,18 +182,27 @@ void E_HACKCPU(int i, int i1, char *op, int i2) {
   emit("@t%d\n", i);
   emit("M = D\n");
 }
+
+/* 印出組合語言 id = t */
 void ASSING_HACKCPU(char *id, int e) {
   emit("@t%d\t#%s = t%d\n", e, id, e);
   emit("D = M\n");
   emit("@%s\n", id);
   emit("M = D\n");
 }
+
+/* 印出組合語言
+if not t_ goto L_ */
 void IFNOT_HACKCPU(int e, int jump) {
   emit("@t%d\t#if not t%d goto L%d\n", e, e, jump);
   emit("D = M\n");
   emit("@L%d\n", jump);
   emit("D;JEQ\n");
 }
+
+/* 印出組合語言
+@L_ 
+goto L_ */
 void GOTO_HACKCPU(int end) {
   emit("@L%d\t#goto L%d\n", end);
   emit("0;JMP\n");
